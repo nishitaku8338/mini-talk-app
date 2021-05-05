@@ -46,3 +46,37 @@ message_channel.jsの役割
 このファイルは、サーバーから送られてきたデータをクライアントの画面に描画するためのファイルです。
 
 これらを編集しながら実装を進めます。
+
+
+
+message_channel.rbを編集
+このファイルは、サーバーとクライアントを繋ぐファイルです。
+MVCでいうところのルーティングの機能を果たします。
+stream_fromメソッドを用いることで、サーバーとクライアントの関連付けを設定します。
+
+
+stream_from
+stream_fromとは、サーバーとクライアントを関連付けるメソッドです。
+Action Cableにあらかじめ用意されています。
+
+まずは、message_channel.rbに以下を追記しましょう。
+app/channels/message_channel.rb
+class MessageChannel < ApplicationCable::Channel
+  def subscribed
+    stream_from "message_channel"
+  end
+
+  def unsubscribed
+    # Any cleanup needed when channel is unsubscribed
+  end
+end
+
+
+これでサーバーとクライアントを関連付けるための設定ができました。
+以下の図の赤く示している箇所です。
+stream_fromメソッドで関連付けられるデータの経路のことを、
+broadcast（ブロードキャスト）と呼びます。
+
+broadcast（ブロードキャスト）
+broadcastとは、サーバーから送られるデータの経路のことを指します。
+broadcastを介してデータをクライアントに送信します。
