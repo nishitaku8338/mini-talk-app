@@ -1,2 +1,11 @@
-<h1>Messages#new</h1>
-<p>Find me in app/views/messages/new.html.erb</p>
+<h3>mini-talk-app</h3>
+<%= form_with model: @message do |f| %>
+  <%= f.text_field :text %>
+  <%= f.submit '送信' %>
+<% end %>
+
+<div id='messages'>
+  <% @messages.reverse_each do |message| %>
+    <p><%= message.text %></p>
+  <% end %>
+</div>
