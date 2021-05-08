@@ -104,3 +104,39 @@ end
 追記した10行目は、broadcastを通して、
 'message_channel'に向けて@messageを送信するということです。
 送信された情報は、message_channel.jsで受け取ります。
+
+
+
+message_channel.jsを編集
+受け取った情報は、receivedの引数dataに入ります。
+このデータをテンプレートリテラルにして、new.html.erbに挿入しましょう。
+以下のように編集してください。
+
+app/javascript/channels/message_channel.js
+import consumer from "./consumer"
+
+consumer.subscriptions.create("MessageChannel", {
+  connected() {
+    // Called when the subscription is ready for use on the server
+  },
+
+  disconnected() {
+    // Called when the subscription has been terminated by the server
+  },
+
+  received(data) {
+    const html = `<p>${data.content.text}</p>`;
+    const messages = document.getElementById('messages');
+    const newMessage = document.getElementById('message_text');
+    messages.insertAdjacentHTML('afterbegin', html);
+    newMessage.value='';
+  }
+});
+
+13行目で受け取ったdataのなかにあるcontentのなかのtextを表示します。
+contentはコントローラーのcreateアクション内で指定したcontentからきています。
+contentは@messageと同義なので、textを取り出せるというわけです。
+
+ここまで実装出来たら、localhost:3000に接続して、実際にメッセージを送信して確かめましょう。
+以下のような表示がされていれば成功です。
+
